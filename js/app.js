@@ -1,5 +1,9 @@
-var blockWidth = 100;
-var blockHeight = 85;
+var blockWidth = 101;
+var blockHeight = 83;
+var edge_x = 450;
+var edge_y = 450;
+var player_pos_x = 200;
+var player_pos_y = 400;
 
 
 // Enemies our player must avoid
@@ -12,14 +16,20 @@ var Enemy = function(x,y) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     //set the speed
-    var pxlpermsec = 200;
+    var pxlpermsec = 100;
     this.speed = Math.floor(Math.random()*pxlpermsec + 1);
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    this.x = (this.x + this.speed * dt);
+    
+    //console.log(this.x);
+    if (this.x < edge_x){
+        this.x += this.speed * dt;
+    } else {
+        this.x = 0;
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -47,23 +57,31 @@ var player = function(x,y){
         this.x -= blockWidth;
     };
     this.moveRight = function(){
-        this.x += blockWidth; };
-    this.moveUp = function(){ this.y -= blockHeight; };
-    this.moveDown = function(){ this.y -= blockHeight; };
+        this.x += blockWidth;
+    };
+    this.moveUp = function(){
+        this.y -= blockHeight*0.5;
+    };
+    this.moveDown = function(){
+        this.y += blockHeight*0.5;
+    };
     
 };
 
 player.prototype.update = function(){
     if (this.x < 0) {
         this.x = 0;
-    } else if (this.x > 405) {
-        this.x = 405;
-    } else if (this.y === 0) {
-        this.y = 405;
+    } else if (this.x > edge_x - blockWidth * 0.5) {
+        this.x = edge_x - blockWidth * 0.5;
+        console.log(this.x);
+        
     } else if (this.y < 0) {
-        this.y = 450;
-    } else if (this.y > 550) {
-        this.y = 505;
+        this.y = 0;
+    } else if (this.y === 0) {
+        this.y = player_pos_y ;
+        this.x = player_pos_x;
+    } else if (this.y > edge_y - blockHeight * 0.5) {
+        this.y = edge_y - blockHeight*0.5;
     }
     
 };
