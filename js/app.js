@@ -143,20 +143,17 @@ player.prototype.handleInput = function(allowedKeys){
 //collision code
 var checkCollisions = function(target){
     // if enemy:
-     //if (player.x <= target.x && player.x + player.width * 0.25  >= target.x && player.y <= target.y && player.y + player.height* 0.25 >= target.y){
+     if (player.x <= target.x && player.x + player.width  >= target.x && player.y <= target.y && player.y + player.height >= target.y){
     //if (player.x <= target.x && player.x + player.width < target.x && player.y < target.y && player.y + player.height < target.height){
-    if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
+    //if (player.x < target.x + target.width*.25 && player.x + player.width >= target.x && player.y <= target.y + target.height && player.y + player.height*.25 >= target.y){
         console.log("collision is happening!");
     }
-    /*if (this.lives > 1) {
-             this.lives -= 1;
-             document.getElementById("myLivesDivId").innerHTML = player.lives;
-            
-            player.reset();
-        } else {
-            this.lives = 0;
-        }
-     }*/
+    
+    if (player.lives > 1) {
+        player.lives -= 1;
+        player.reset();
+    }
+    document.getElementById("myLivesDivId").innerHTML=player.lives;
 };
 
 //Collision code for player class
