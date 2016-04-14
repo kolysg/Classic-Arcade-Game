@@ -95,6 +95,8 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
+            //enemy.width = 50;
+            //enemy.height = 40;
             enemy.update(dt);
         });
         player.update();
