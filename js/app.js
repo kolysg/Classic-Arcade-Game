@@ -43,7 +43,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var enemy = new Enemy(0,0);
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -55,6 +54,7 @@ var player = function(x,y){
     this.width = 70;
     this.score = 0;
     this.lives = 5;
+    this.gemScore = 0;
     this.sprite = 'images/char-boy.png';
     //assign player's movement
     this.moveLeft = function(){
@@ -80,6 +80,7 @@ player.prototype.update = function(){
 player.prototype.reset = function(){
     this.x = player_pos_x;
     this.y = player_pos_y;
+    this.lives = 5;
 }
 
 player.prototype.render = function(){
@@ -144,58 +145,102 @@ player.prototype.handleInput = function(allowedKeys){
 //collision code
 var checkCollisions = function(targets){
     var target;
-    var isCollision = true;
-    var counter = 0;
+    //var isCollision = true;
+    //var counter = 0;
     if (Array.isArray(targets)){
         for (var i =0; i < targets.length; i++){
             target = targets[i];
-            //var counter = 0;
-            if (targets = allEnemies){
+            // For Bugs
+            if (targets === allEnemies){
                 target.width = 50;
                 target.height = 40;
             }
-            if (player.x < target.x + target.width && player.x + player.width  > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
-                console.log ("collision!!");
-                isCollision = true;
-                counter ++;
-                //return target;
-                if (counter > 1 && isCollision){
-                    isCollision = false;
-                }
-                return isCollision;
+            if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
+                console.count ("collision!!");
+                player.y += 20;//pushes the player back
+                return true;   //collision
             }
-            
-        }
-            
-            
+            // For Gems
+            if (targets === blueGem){
+                target.width = 40;
+                target.height = 40;
+            }
+            if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
+                console.count ("Score!!");
+                player.y -= 20;//pushes the player up
+                gem_blue.reset();
+                return true;   //collision
+            } 
+        }      
     }
+    return false;    //no collision
 };
 
 
 //Collision code for player and enemy
 
-player.prototype.checkCollisions = function (targets){  
+player.prototype.checkCollisions = function (targets){ 
+    //Bug
     var bug = checkCollisions(allEnemies);
+    var gems = checkCollisions(blueGem);
     if (bug){
-        if (this.lives > 0){
-            //alert("Game Over, Try Again!");
-            this.lives -= 1;
-            
-        }else if (this.lives == 0){
-            this.reset();
-            //this.reset();
+        if (player.lives > 0){
+            player.lives -= 1;
+        }else if (player.lives == 0){
+            player.reset();
+            alert ('Game Over!');
         }
-        document.getElementById("Lives").innerHTML= this.lives;
+    }
+    
+    //Gem
+    if (gems){
+            console.log("Gems!");
+            player.gemScore += 1;
+            player.lives += 1;
     }
 };
 
 
+// Show gem
+var gem = function (x, y){
+    this.height = 70;
+    this.width = 70;
+    this.x = Math.floor(Math.random() * (505 - this.width));
+    this.y = Math.floor(Math.random() * (332 - this.height));
+    if (this.y < blockHeight){
+        this.y += blockHeight;
+    }
+};
+
+var blueGem = function(x,y){
+    gem.call(this, x, y);
+    this.sprite = 'images/gem-blue.png';
+};
+
+blueGem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+blueGem.prototype.reset = function(){
+    this.y -= 20;
+    player.lives += 1;
+    document.getElementById("Lives").innerHTML = player.lives;
+    document.getElementById("Gems").innerHTML = this.gemScore;
+}
+
+blueGem.prototype.update = function(){
+    this.x = this.x;
+    this.y = this.y; 
+};
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+var enemy = new Enemy(0,0);
 var allEnemies = [new Enemy (0,100), new Enemy(0,200), new Enemy(50,300)];
 
 // Place the player object in a variable called player
 var player = new player(200,450);
+var gem_blue = new blueGem(350,400);
 
 
 //Define handleInput function

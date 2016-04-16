@@ -15,7 +15,7 @@ body {
 .grid {
     max-width: 1170px;
     width: 100%;
-    padding: 5px;
+    padding: 2px;
 }
 
 .row {
@@ -33,6 +33,7 @@ body {
 
 .col-md-3 {
     width: 25%;
+    margin-bottom: inherit;
 }
 
 .col-md-4 {
@@ -45,7 +46,7 @@ body {
 
 h1 {
   font-size: 40px;
-  color: #b2c1d1;
+  color: #b3c2d9;
 }
 
 p {

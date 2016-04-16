@@ -81,9 +81,8 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         player.checkCollisions(allEnemies);
+        player.checkCollisions(gem_blue);
         //player.collisions(allEnemies);
-        //drawScore();
-        //drawLives();
     }
 
     /* This is called by the update function and loops through all of the
@@ -95,11 +94,11 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            //enemy.width = 50;
-            //enemy.height = 40;
             enemy.update(dt);
         });
         player.update();
+        gem_blue.update();
+        //Gem.update(Score);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -108,6 +107,7 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
+    
     function render() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
@@ -157,6 +157,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        gem_blue.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -176,11 +177,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/gem-blue.png'
     ]);
     Resources.onReady(init);
 
-    /* Assign the canvas' context object to the global variable (the window
+    /* Assign the canvas' context objectag to the global variable (the window
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
