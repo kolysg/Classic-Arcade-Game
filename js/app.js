@@ -108,8 +108,6 @@ player.prototype.handleInput = function(allowedKeys){
                 this.moveUp();
             } else if (this.y < this.height){
                 this.score += 100;
-                //document.getElementById("myScoreDivId").innerHTML = player.score;
-                //this.y = 0;
                 player.reset();
             } else {
                 this.y = 0;
@@ -181,8 +179,10 @@ var checkCollisions = function(targets){
 
 player.prototype.checkCollisions = function (targets){ 
     //Bug
-    var bug = checkCollisions(allEnemies);
     var gems = checkCollisions(blueGem);
+    var bug = checkCollisions(allEnemies);
+    //var gems = checkCollisions(blueGem);
+    //var gems = checkCollisions(blueGem);
     if (bug){
         if (player.lives > 0){
             player.lives -= 1;
@@ -224,8 +224,6 @@ blueGem.prototype.render = function(){
 blueGem.prototype.reset = function(){
     this.y -= 20;
     player.lives += 1;
-    document.getElementById("Lives").innerHTML = player.lives;
-    document.getElementById("Gems").innerHTML = this.gemScore;
 }
 
 blueGem.prototype.update = function(){
