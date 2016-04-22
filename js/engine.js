@@ -69,7 +69,43 @@ var Engine = (function(global) {
         lastTime = Date.now();
         main();
     }
+    
+    //collision code
+var checkCollisions = function(targets){
+    var target;
+    //var isCollision = true;
+    //var counter = 0;
+    if (Array.isArray(targets)){
+        for (var i =0; i < targets.length; i++){
+            target = targets[i];
+            // For Bugs
+            if (targets === allEnemies){
+                target.width = 50;
+                target.height = 40;
+            }
+            
+        // bug
+            if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
+                console.count ("collision!!");
+                player.y += 20;//pushes the player back
+                return true;   //collision
+            }
+            
+         // Gems   
+            if (targets === allGems){
+                if (player.x < (target.x + target.width) && (player.x + player.width) > target.x && (player.y < target.y) + target.height && (player.y + player.height) > target.y){
+                    console.count ("Gem!!");
+                    player.y -= 20;//pushes the player up
+                    blueGem.reset();
+                    return true;   //collision
+                }
+            } 
+        }      
+    }
+    return false;    //no collision
+};
 
+    
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
