@@ -56,7 +56,8 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        //win.requestAnimationFrame(main);
+        win.setInterval(main, 200);
     }
 
     /* This function does some initial setup that should only occur once,
@@ -81,7 +82,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         player.checkCollisions(allEnemies);
-        player.checkCollisions(gem_blue);
+        player.checkCollisions(allGems);
         //player.collisions(allEnemies);
     }
 
@@ -92,12 +93,14 @@ var Engine = (function(global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
-    function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+    function updateEntities(dt,score) {
+        if (player.gameWon != true){
+            allEnemies.forEach(function(enemy) {
             enemy.update(dt);
-        });
+            });
+        }
         player.update();
-        gem_blue.update();
+        blueGem.update();
         //Gem.update(Score);
     }
 
@@ -155,9 +158,13 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+        
+        /*allGems.forEach(function(blueGem) {
+            blueGem.render();
+        });*/
 
         player.render();
-        gem_blue.render();
+        blueGem.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -165,7 +172,10 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        if (player.gameLost !== true){
+            player.reset();
+            blueGem.reset();
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to

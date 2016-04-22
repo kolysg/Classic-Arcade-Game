@@ -113,7 +113,7 @@ player.prototype.handleInput = function(allowedKeys){
                 this.y = 0;
                 player.reset();
             }
-            document.getElementById("Score").innerHTML = player.score;
+            //document.getElementById("Score").innerHTML = player.score;
             //this.moveUp();
             break;
         case 'right':
@@ -153,21 +153,22 @@ var checkCollisions = function(targets){
                 target.width = 50;
                 target.height = 40;
             }
+            
+        // bug
             if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
                 console.count ("collision!!");
                 player.y += 20;//pushes the player back
                 return true;   //collision
             }
-            // For Gems
-            if (targets === blueGem){
-                target.width = 40;
-                target.height = 40;
-            }
-            if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
-                console.count ("Score!!");
-                player.y -= 20;//pushes the player up
-                gem_blue.reset();
-                return true;   //collision
+            
+         // Gems   
+            if (targets === allGems){
+                if (player.x < (target.x + target.width) && (player.x + player.width) > target.x && (player.y < target.y) + target.height && (player.y + player.height) > target.y){
+                    console.count ("Gem!!");
+                    player.y -= 20;//pushes the player up
+                    blueGem.reset();
+                    return true;   //collision
+                }
             } 
         }      
     }
@@ -179,25 +180,27 @@ var checkCollisions = function(targets){
 
 player.prototype.checkCollisions = function (targets){ 
     //Bug
-    var gems = checkCollisions(blueGem);
+    var gems = checkCollisions(allGems);
     var bug = checkCollisions(allEnemies);
-    //var gems = checkCollisions(blueGem);
-    //var gems = checkCollisions(blueGem);
+
     if (bug){
         if (player.lives > 0){
             player.lives -= 1;
         }else if (player.lives == 0){
+            alert("Game Over!");
             player.reset();
-            alert ('Game Over!');
         }
     }
+    document.getElementById("Score").innerHTML = player.score;
     
     //Gem
     if (gems){
-            console.log("Gems!");
-            player.gemScore += 1;
-            player.lives += 1;
+        player.lives += 1;
+        player.gemScore += 1;
     }
+
+    document.getElementById("Lives").innerHTML = player.lives;
+    document.getElementById("Gems").innerHTML = player.gemScore;
 };
 
 
@@ -232,14 +235,11 @@ blueGem.prototype.update = function(){
 };
 
 // Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
 var enemy = new Enemy(0,0);
+var allGems = [new blueGem];
 var allEnemies = [new Enemy (0,100), new Enemy(0,200), new Enemy(50,300)];
-
-// Place the player object in a variable called player
 var player = new player(200,450);
-var gem_blue = new blueGem(350,400);
-
+var blueGem = new blueGem(350,400); 
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {
