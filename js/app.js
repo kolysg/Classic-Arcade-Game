@@ -55,6 +55,8 @@ var player = function(x,y){
     this.score = 0;
     this.lives = 5;
     this.gemScore = 0;
+    this.gameLost = false;
+    this.gameWon = false;
     this.sprite = 'images/char-boy.png';
     //assign player's movement
     this.moveLeft = function(){
