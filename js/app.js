@@ -1,9 +1,9 @@
 var blockWidth = 101;
-var blockHeight = 83;
+var blockHeight = 120;
 var edge_x = 450;
 var edge_y = 450;
-var player_pos_x = 200;
-var player_pos_y = 400;
+var player_pos_x = 220;
+var player_pos_y = 606 - blockHeight;
 
 
 
@@ -50,8 +50,8 @@ Enemy.prototype.render = function() {
 var player = function(x,y){
     this.x = player_pos_x;
     this.y = player_pos_y;
-    this.height = 83;
-    this.width = 70;
+    this.height = 78;
+    this.width = 67;
     this.score = 0;
     this.lives = 5;
     this.gemScore = 0;
@@ -82,7 +82,6 @@ player.prototype.update = function(){
 player.prototype.reset = function(){
     this.x = player_pos_x;
     this.y = player_pos_y;
-    this.lives = 5;
 }
 
 player.prototype.render = function(){
@@ -106,13 +105,14 @@ player.prototype.handleInput = function(allowedKeys){
             break;
        
         case 'up':
-            if (this.y > blockHeight* 0.5){
+            if (this.y > blockHeight){
                 this.moveUp();
             } else if (this.y < this.height){
                 this.score += 100;
                 this.y = 0;
                 player.reset();
-            document.getElementById('Lives').innerHTML = player.score;
+            document.getElementById('Score').innerHTML = player.score;
+            document.getElementById('Lives').innerHTML = player.lives;
             } else {
                 player.reset();
             }
@@ -155,8 +155,8 @@ player.prototype.collisions = function (targets){
 
 // Show gem
 var gem = function (x, y){
-    this.height = 70;
-    this.width = 70;
+    this.height = 105;
+    this.width = 101;
     this.x = Math.floor(Math.random() * (505 - this.width));
     this.y = Math.floor(Math.random() * (332 - this.height));
     if (this.y < blockHeight){
@@ -178,9 +178,15 @@ blueGem.prototype.render = function(){
 };
 
 blueGem.prototype.reset = function(){
-    this.y -= 20;
     player.lives += 1;
+    this.y = -400;
     document.getElementById("Lives").innerHTML = player.lives;
+    if (player.y < 0){
+        player.y -= 20;
+    }
+    
+     //gem dissappears
+    
 };
 
 blueGem.prototype.update = function(){
@@ -191,7 +197,11 @@ blueGem.prototype.update = function(){
 // Now instantiate your objects.
 var enemy = new Enemy(0,0);
 var allGems = [new blueGem];
-var allEnemies = [new Enemy (0,100), new Enemy(0,200), new Enemy(50,300)];
+//var allEnemies = [new Enemy (0,100), new Enemy(0,200), new Enemy(50,300)];
+var allEnemies = [];
+for (var i = 1; i < 4; i++) {
+    allEnemies.push(new Enemy(this.x, (i * 83) - 20, this.speed * 100 * i));
+}
 var player = new player(200,450);
 var blueGem = new blueGem(350,400); 
 

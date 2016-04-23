@@ -65,7 +65,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -77,19 +77,20 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy){
             if (player.x < enemy.x + enemy.width && player.x + player.width > enemy.x && player.y < enemy.y + enemy.height && player.y + player.height > enemy.y){
                 console.count ("collision!!");
+                player.collisions();
                 player.y += 20;//pushes the player back
                 return true;   //collision
             }
             return false;    //no collision
         });
              // Gems       
-        if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && (player.y < blueGem.y) + blueGem.height && (player.y + player.height) > blueGem.y){
-                console.count ("Gem!!");
-                //player.y -= 20;//pushes the player up
-                blueGem.reset();
-                return true;   //collision
+        if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
+            //console.count ("Gem!!");
+            //player.y -= 20;//pushes the player up
+            blueGem.reset();
+            //return true;   //collision
         }
-        return false;    //no collision
+        //return false;    //no collision
     };
 
     
@@ -195,12 +196,12 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-    function reset() {
+    /*function reset() {
         if (player.gameLost !== true){
             player.reset();
             blueGem.reset();
         }
-    }
+    }*/
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
