@@ -56,8 +56,8 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        //win.requestAnimationFrame(main);
-        win.setInterval(main, 200);
+        win.requestAnimationFrame(main);
+        //win.setInterval(main, 200);
     }
 
     /* This function does some initial setup that should only occur once,
@@ -71,39 +71,26 @@ var Engine = (function(global) {
     }
     
     //collision code
-var checkCollisions = function(targets){
-    var target;
-    //var isCollision = true;
-    //var counter = 0;
-    if (Array.isArray(targets)){
-        for (var i =0; i < targets.length; i++){
-            target = targets[i];
-            // For Bugs
-            if (targets === allEnemies){
-                target.width = 50;
-                target.height = 40;
-            }
-            
+    var checkCollisions = function(){
+        
         // bug
-            if (player.x < target.x + target.width && player.x + player.width > target.x && player.y < target.y + target.height && player.y + player.height > target.y){
+        allEnemies.forEach(function(enemy){
+            if (player.x < enemy.x + enemy.width && player.x + player.width > enemy.x && player.y < enemy.y + enemy.height && player.y + player.height > enemy.y){
                 console.count ("collision!!");
                 player.y += 20;//pushes the player back
                 return true;   //collision
             }
-            
-         // Gems   
-            if (targets === allGems){
-                if (player.x < (target.x + target.width) && (player.x + player.width) > target.x && (player.y < target.y) + target.height && (player.y + player.height) > target.y){
-                    console.count ("Gem!!");
-                    player.y -= 20;//pushes the player up
-                    blueGem.reset();
-                    return true;   //collision
-                }
-            } 
-        }      
-    }
-    return false;    //no collision
-};
+            return false;    //no collision
+        });
+             // Gems       
+        if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && (player.y < blueGem.y) + blueGem.height && (player.y + player.height) > blueGem.y){
+                console.count ("Gem!!");
+                //player.y -= 20;//pushes the player up
+                blueGem.reset();
+                return true;   //collision
+        }
+        return false;    //no collision
+    };
 
     
     /* This function is called by main (our game loop) and itself calls all
@@ -117,8 +104,9 @@ var checkCollisions = function(targets){
      */
     function update(dt) {
         updateEntities(dt);
-        player.checkCollisions(allEnemies);
-        player.checkCollisions(allGems);
+        checkCollisions();
+        //player.checkCollisions(allEnemies);
+        //player.checkCollisions(allGems);
         //player.collisions(allEnemies);
     }
 
