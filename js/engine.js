@@ -125,7 +125,7 @@ var Engine = (function(global) {
                 enemy.update(dt);
             });
         }
-        player.update();
+        player.update(score);
         blueGem.update();
         //Gem.update(Score);
     }

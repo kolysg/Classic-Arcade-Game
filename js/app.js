@@ -5,8 +5,6 @@ var edge_y = 450;
 var player_pos_x = 220;
 var player_pos_y = 606 - blockHeight;
 
-
-
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
@@ -170,6 +168,8 @@ gem.prototype.update = function(){
     this.x = this.x;
     this.y = this.y;
 }
+
+//blueGem
 var blueGem = function(x,y){
     gem.call(this, x, y);
     this.sprite = 'images/gem-blue.png';
@@ -181,14 +181,11 @@ blueGem.prototype.render = function(){
 
 blueGem.prototype.reset = function(){
     player.lives += 1;
-    this.y = -400;
+    this.y = -400; //gem dissappears
     document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
-    }
-    
-     //gem dissappears
-    
+    } 
 };
 
 blueGem.prototype.update = function(){
@@ -199,10 +196,9 @@ blueGem.prototype.update = function(){
 // Now instantiate your objects.
 var enemy = new Enemy(0,0);
 var allGems = [new blueGem];
-//var allEnemies = [new Enemy (0,100), new Enemy(0,200), new Enemy(50,300)];
 var allEnemies = [];
 for (var i = 1; i < 4; i++) {
-    allEnemies.push(new Enemy(this.x, (i * 83) - 20, this.speed * 100 * i));
+    allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));
 }
 var player = new player(200,450);
 var blueGem = new blueGem(350,400); 
