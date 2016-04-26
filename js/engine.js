@@ -83,7 +83,8 @@ var Engine = (function(global) {
             }
             return false;    //no collision
         });
-             // Gems       
+        
+        // Gems       
         if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
             //console.count ("Gem!!");
             //player.y -= 20;//pushes the player up
@@ -121,7 +122,7 @@ var Engine = (function(global) {
     function updateEntities(dt,score) {
         if (player.gameWon != true){
             allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+                enemy.update(dt);
             });
         }
         player.update();

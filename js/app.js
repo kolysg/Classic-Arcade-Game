@@ -13,6 +13,8 @@ var Enemy = function(x,y,speed) {
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
+    this.height = 70;
+    this.width = 100;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -139,13 +141,13 @@ player.prototype.handleInput = function(allowedKeys){
 };
 
 
-
 //Collision code for player and enemy
 
-player.prototype.collisions = function (targets){ 
+player.prototype.collisions = function (){ 
     //Bug
     if (player.lives > 0){
         player.lives -= 1;
+        this.reset();
     }else {
         this.lives = 0;
     }
