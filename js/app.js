@@ -107,7 +107,7 @@ player.prototype.handleInput = function(allowedKeys){
         case 'up':
             if (this.y > blockHeight){
                 this.moveUp();
-            } else if (this.y < this.height){
+            } else if (this.y <= this.height){
                 this.score += 100;
                 this.y = 0;
                 player.reset();
@@ -193,6 +193,32 @@ blueGem.prototype.update = function(){
     this.y = this.y; 
 };
 
+//Heart
+var heart = function(x,y){
+    this.x = 270;
+    this.y = 300;
+    gem.call(this, x, y);
+    this.sprite = 'images/Heart.png';
+};
+
+heart.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+heart.prototype.reset = function(){
+    player.lives += 1;
+    this.y = -400; //gem dissappears
+    document.getElementById("Lives").innerHTML = player.lives;
+    if (player.y < 0){
+        player.y -= 20;
+    } 
+};
+
+heart.prototype.update = function(){
+    this.x = this.x;
+    this.y = this.y; 
+};
+
 // Now instantiate your objects.
 var enemy = new Enemy(0,0);
 var allGems = [new blueGem];
@@ -202,6 +228,7 @@ for (var i = 1; i < 4; i++) {
 }
 var player = new player(200,450);
 var blueGem = new blueGem(350,400); 
+var heart = new heart(380,430);
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {

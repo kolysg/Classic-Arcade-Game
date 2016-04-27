@@ -20,36 +20,40 @@ body {
 
 .row {
     width: 100%;
-    display: flex; flex-wrap: wrap;
+    display: flex; flex-wrap: wrap; flex-direction: row;
+    margin:auto;
 }
 
+
+/*column responsive for different media*/
+
 .col-md-1 {
-    width: 8.33%;
+     width: 8.33%;
 }
 
 .col-md-2 {
-    width: 16.66%;
+     width: 16.66%;
 }
 
 .col-md-3 {
-    width: 25%;
-    margin-bottom: inherit;
+    width: 25%; 
 }
 
 .col-md-4 {
-    width: 33.33%;
+     width: 33.33%;
 }
 
 .col-md-12 {
-    width: 100%;
+     width: 100%;
 }
 
 h1 {
-  font-size: 40px;
-  color: #b3c2d9;
+    font-size: 40px;
+    color: lightcoral;
 }
 
 p {
-  font-size: 20px;
-  color: #b2c1d1;
+    font-size: 20px;
+    color: black;
 }
+

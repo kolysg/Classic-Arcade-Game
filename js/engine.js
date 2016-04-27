@@ -92,8 +92,14 @@ var Engine = (function(global) {
             //return true;   //collision
         }
         //return false;    //no collision
+        
+        // Heart      
+        if (player.x < (heart.x + heart.width) && (player.x + player.width) > heart.x && player.y < (heart.y + heart.height) && (player.y + player.height) > heart.y) {
+            //console.count ("Gem!!");
+            //player.y -= 20;//pushes the player up
+            heart.reset();
+        }
     };
-
     
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
@@ -127,6 +133,7 @@ var Engine = (function(global) {
         }
         player.update(score);
         blueGem.update();
+        heart.update();
         //Gem.update(Score);
     }
 
@@ -177,20 +184,26 @@ var Engine = (function(global) {
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
      */
-    function renderEntities() {
+    function renderEntities(score) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-        
-        /*allGems.forEach(function(blueGem) {
-            blueGem.render();
-        });*/
-
+    
         player.render();
-        blueGem.render();
+        //heart.render();
+        
+        //Appearance of gems & heart as function of score
+        if (player.score > 200){
+            blueGem.render();   
+        }
+        
+        if (player.score >= 400){
+            heart.render();
+        }
+        
     }
 
     /* This function does nothing but it could have been a good place to
@@ -214,7 +227,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/gem-blue.png'
+        'images/gem-blue.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
