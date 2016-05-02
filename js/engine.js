@@ -77,7 +77,7 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy){
             if (player.x < enemy.x + enemy.width && player.x + player.width > enemy.x && player.y < enemy.y + enemy.height && player.y + player.height > enemy.y){
                 console.count ("collision!!");
-                player.collisions();
+                player.enemyCollisions();
                 player.y += 20;//pushes the player back
                 return true;   //collision
             }
@@ -87,19 +87,24 @@ var Engine = (function(global) {
         // Gems       
         if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
             //console.count ("Gem!!");
-            return true;   //collision
-            blueGem.y = -400;
+            //return true;   //collision
+            player.gemCollisions();
+            //player.lives += 1;
+            //document.getElementById("Lives").innerHTML = player.lives;
+            blueGem.reset();
+            
         }
-        return false;    //no collision
-        blueGem.reset();
+        //return false;    //no collision
         
         // Heart      
         if (player.x < (heart.x + heart.width) && (player.x + player.width) > heart.x && player.y < (heart.y + heart.height) && (player.y + player.height) > heart.y) {
+            player.gemCollisions();
             //console.count ("Gem!!");
-            player.y -= 20;//pushes the player up
-            //heart.y = -400;
+            //player.lives += 1;
+            //document.getElementById("Lives").innerHTML = player.lives;
             heart.reset();
         }
+       
     };
     
     /* This function is called by main (our game loop) and itself calls all

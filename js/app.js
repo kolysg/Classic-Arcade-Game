@@ -83,7 +83,7 @@ player.prototype.update = function(){
 player.prototype.reset = function(){
     this.x = player_pos_x;
     this.y = player_pos_y;
-}
+};
 
 player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -117,7 +117,6 @@ player.prototype.handleInput = function(allowedKeys){
                 player.reset();
             }
             document.getElementById('Score').innerHTML = player.score;
-            document.getElementById('Lives').innerHTML = player.lives;
             break;
         
         case 'right':
@@ -130,7 +129,7 @@ player.prototype.handleInput = function(allowedKeys){
             break;
         
         case 'down':
-            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - blockHeight)){
+            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - blockHeight*0.5)){
                 this.moveDown();
             }
             if (this.y === 0){
@@ -158,7 +157,7 @@ player.prototype.handleInput = function(allowedKeys){
     document.getElementById("Lives").innerHTML = player.lives;
 };*/
 //////////////////////////Player Collision - previous version- Starts
-player.prototype.collisions = function (){ 
+player.prototype.enemyCollisions = function (){ 
     //Bug
     if (player.lives > 0){
         player.lives -= 1;
@@ -166,9 +165,22 @@ player.prototype.collisions = function (){
     }else {
         this.lives = 0;
     }
+    if(this.lives === 0){
+        this.lives = 0;
+        alert("Game Over, Try again!");
+        this.reset(); 
+    }
     document.getElementById("Lives").innerHTML = player.lives;
 };
 
+player.prototype.gemCollisions = function (){ 
+    //Bug
+    if (player.lives > 0){
+        player.lives += 1;
+        //this.reset();
+    }
+    document.getElementById("Lives").innerHTML = player.lives;
+};
 //////////////////////////player collision - previsou version - ends
 
 // Show gem
@@ -199,10 +211,11 @@ blueGem.prototype.render = function(){
 };
 
 blueGem.prototype.reset = function(){
-    Gem.call(this,this.y);
-    player.lives += 1;
-    //this.y = this.y; 
-    document.getElementById("Lives").innerHTML = player.lives;
+    //Gem.call(this);
+    if (player.gemCollisions){
+        this.y = -400;
+    }
+    
     if (player.y < 0){
         player.y -= 20;
     } 
@@ -227,10 +240,10 @@ heart.prototype.render = function(){
 };
 
 heart.prototype.reset = function(){
-    Gem.call(this,this.y);
-    player.lives += 1;
-    this.y = this.y; //gem dissappears
-    document.getElementById("Lives").innerHTML = player.lives;
+    if (player.gemCollisions){
+        this.y = -400;
+    }
+    
     if (player.y < 0){
         player.y -= 20;
     } 
