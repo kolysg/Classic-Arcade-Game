@@ -1,3 +1,4 @@
+
 var blockWidth = 101;
 var blockHeight = 120;
 var edge_x = 450;
@@ -105,17 +106,18 @@ player.prototype.handleInput = function(allowedKeys){
             break;
        
         case 'up':
-            if (this.y > blockHeight){
+            if (this.y > blockHeight ){
                 this.moveUp();
-            } else if (this.y <= this.height){
-                this.score += 100;
+            } else if (this.y < blockHeight*0.5){
                 this.y = 0;
+                this.score += 100;
                 player.reset();
-            document.getElementById('Score').innerHTML = player.score;
-            document.getElementById('Lives').innerHTML = player.lives;
             } else {
+                this.score += 100;
                 player.reset();
             }
+            document.getElementById('Score').innerHTML = player.score;
+            document.getElementById('Lives').innerHTML = player.lives;
             break;
         
         case 'right':
@@ -141,6 +143,21 @@ player.prototype.handleInput = function(allowedKeys){
 
 //Collision code for player and enemy
 
+/*player.prototype.collisions = function (){ 
+    //Bug
+    if (this.lives > 0){
+        this.lives -= 1;
+        
+    }
+    if(this.lives === 0){
+        this.lives = 0;
+        alert("Game Over, Try again!");
+        this.reset(); 
+    }
+      
+    document.getElementById("Lives").innerHTML = player.lives;
+};*/
+//////////////////////////Player Collision - previous version- Starts
 player.prototype.collisions = function (){ 
     //Bug
     if (player.lives > 0){
@@ -152,9 +169,10 @@ player.prototype.collisions = function (){
     document.getElementById("Lives").innerHTML = player.lives;
 };
 
+//////////////////////////player collision - previsou version - ends
 
 // Show gem
-var gem = function (x, y){
+var Gem = function (x, y){
     this.height = 105;
     this.width = 101;
     this.x = Math.floor(Math.random() * (505 - this.width));
@@ -164,14 +182,15 @@ var gem = function (x, y){
     }
 };
 
-gem.prototype.update = function(){
+Gem.prototype.update = function(){
     this.x = this.x;
     this.y = this.y;
-}
+};
 
-//blueGem
+
+////////////////////////////blueGem Previous version - start
 var blueGem = function(x,y){
-    gem.call(this, x, y);
+    Gem.call(this, x, y);
     this.sprite = 'images/gem-blue.png';
 };
 
@@ -180,8 +199,9 @@ blueGem.prototype.render = function(){
 };
 
 blueGem.prototype.reset = function(){
+    Gem.call(this,this.y);
     player.lives += 1;
-    this.y = -400; //gem dissappears
+    //this.y = this.y; 
     document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
@@ -192,12 +212,13 @@ blueGem.prototype.update = function(){
     this.x = this.x;
     this.y = this.y; 
 };
+/////////////////////////////////blueGem Previous version - end
 
 //Heart
 var heart = function(x,y){
     this.x = 270;
     this.y = 300;
-    gem.call(this, x, y);
+    Gem.call(this, x, y);
     this.sprite = 'images/Heart.png';
 };
 
@@ -206,8 +227,9 @@ heart.prototype.render = function(){
 };
 
 heart.prototype.reset = function(){
+    Gem.call(this,this.y);
     player.lives += 1;
-    this.y = -400; //gem dissappears
+    this.y = this.y; //gem dissappears
     document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
@@ -219,9 +241,11 @@ heart.prototype.update = function(){
     this.y = this.y; 
 };
 
+
+
 // Now instantiate your objects.
 var enemy = new Enemy(0,0);
-var allGems = [new blueGem];
+var allGems = [new blueGem(), new heart()];
 var allEnemies = [];
 for (var i = 1; i < 4; i++) {
     allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));

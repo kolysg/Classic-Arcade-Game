@@ -87,16 +87,17 @@ var Engine = (function(global) {
         // Gems       
         if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
             //console.count ("Gem!!");
-            //player.y -= 20;//pushes the player up
-            blueGem.reset();
-            //return true;   //collision
+            return true;   //collision
+            blueGem.y = -400;
         }
-        //return false;    //no collision
+        return false;    //no collision
+        blueGem.reset();
         
         // Heart      
         if (player.x < (heart.x + heart.width) && (player.x + player.width) > heart.x && player.y < (heart.y + heart.height) && (player.y + player.height) > heart.y) {
             //console.count ("Gem!!");
-            //player.y -= 20;//pushes the player up
+            player.y -= 20;//pushes the player up
+            //heart.y = -400;
             heart.reset();
         }
     };
@@ -132,9 +133,9 @@ var Engine = (function(global) {
             });
         }
         player.update(score);
+        //Gem.update();
         blueGem.update();
         heart.update();
-        //Gem.update(Score);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -196,11 +197,12 @@ var Engine = (function(global) {
         //heart.render();
         
         //Appearance of gems & heart as function of score
-        if (player.score > 200){
-            blueGem.render();   
+        if (player.score > 200 && player.score < 400){
+            //blueGem.prototype.render(); 
+            blueGem.render();
         }
         
-        if (player.score >= 400){
+        if (player.score > 400 && player.score < 600){
             heart.render();
         }
         
