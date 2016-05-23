@@ -161,7 +161,7 @@ player.prototype.livesUpdate = function(){
         this.restart(); 
     }
     document.getElementById("Lives").innerHTML = player.lives;
-    document.getElementById("Score").innerHTML = player.score;
+    //document.getElementById("Score").innerHTML = player.score;
 };
 
 //enemy collision in a new way
@@ -183,39 +183,26 @@ player.prototype.enemyCollision = function() {
     
 };
 
-//before version
-/*player.prototype.enemyCollisions = function (){ 
-    if (player.lives > 0){
-        player.lives -= 1;
-        this.reset();
-    }else {
-        this.lives = 0;
+player.prototype.gemCollision = function() {
+    var gem = checkCollisions(allGems);
+    //if collision detected, reduce a player life.
+    //Game over if all lives lost.
+    if (gem){
+        allEnemies.forEach(function(gem){
+            //return true;
+            console.count ("GEM!!");
+            player.y += 20;//pushes the player back
+            player.livesUpdate();
+            return true;
+        })
+        
+        player.reset();
     }
-    if(this.lives === 0){
-        this.lives = 0;
-        alert("Game Over, Try again!");
-        this.restart(); 
-    }
-    document.getElementById("Lives").innerHTML = player.lives;
-    document.getElementById("Score").innerHTML = player.score;
-};*/
-
-player.prototype.gemCollision = function(){
-    var gems = checkCollisions(allGems);
-    if (allGems[i] === blueGem){
-        player.lives += 1;
-        //document.getElementById("Lives").innerHTML = player.lives;
-        blueGem.y = -200;
-        player. y += 40;
-        //console.count ("Gem!!");
-        blueGem.reset();   
-    }
+    return false;
     
-    //return false;
 };
-    
-
-
+//gemcollision
+     
 // Show gem
 var Gem = function (x, y){
     this.height = 105;
@@ -228,11 +215,45 @@ var Gem = function (x, y){
 };
 
 Gem.prototype.update = function(){
-    this.x = this.x;
+    //this.x = this.x;
     this.y = this.y;
+    this.gemCollision();
 };
 
+Gem.prototype.reset = function(){ 
+    this.y = -400; //initial value of this gem so that it is out of canvas
+    if (player.y < 0){
+        player.y -= 20;
+    } 
+};
 
+/*Gem.prototype.gemCollision = function(){
+    /*var gems = checkCollisions(allGems);
+    if (allGems[i] === blueGem){
+        console.count("blueGems!")
+        this.lives += 1;
+        document.getElementById("Lives").innerHTML = player.lives;
+        blueGem.y = -400;
+        this. y += 20;
+        blueGem.reset(); 
+    var target = checkCollisions(allGems);
+    var index = allGems.indexOf(target);
+
+    if(index > -1) {
+        allGems.splice(index, 1);
+        player.lives += 1;
+        document.getElementById("Lives").innerHTML = player.lives;
+        return true;
+        if (player.y < 0){
+            player.y -= 20;
+        } 
+        
+    }
+    return false;
+    Gem.reset();
+};*/
+
+//Blue
 var blueGem = function(x,y){
     Gem.call(this, x, y);
     this.sprite = 'images/gem-blue.png';
@@ -241,20 +262,38 @@ var blueGem = function(x,y){
 blueGem.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+//Orange
 
+var orangeGem = function(x,y){
+    Gem.call(this, x, y);
+    this.sprite = 'images/gem-orange.png';
+};
 
-blueGem.prototype.reset = function(){ 
-    
+orangeGem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+//Green
+var greenGem = function(x,y){
+    Gem.call(this, x, y);
+    this.sprite = 'images/gem-green.png';
+};
+
+greenGem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/*blueGem.prototype.reset = function(){ 
     this.y = -400; //initial value of this gem so that it is out of canvas
     if (player.y < 0){
         player.y -= 20;
     } 
-};
+};*/
     
-blueGem.prototype.update = function(){
+/*blueGem.prototype.update = function(){
     this.x = this.x;
     this.y = this.y; 
-};
+};*/
 
 //Heart
 var heart = function(x,y){
@@ -295,55 +334,14 @@ var checkCollisions = function(targetArray) {
     return false;
 };
 
-
-
-//old checkCollision function
-/*var checkCollisions = function(){
-        // bug
-        allEnemies.forEach(function(enemy){
-            if (player.x < enemy.x + enemy.width && player.x + player.width > enemy.x && player.y < enemy.y + enemy.height && player.y + player.height > enemy.y){
-                console.count ("collision!!");
-                player.enemyCollisions();
-                player.y += 20;//pushes the player back
-                return true;   //collision
-            }
-            return false;    //no collision
-        })
-        
-        // Gems
-       // blueGems       
-        if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
-            //return true;
-            blueGem.y = -200;
-            player. y += 40;
-            console.count ("Gem!!");
-            blueGem.reset();
-        }
-        //return false;
-        
-    
-        // Heart      
-        if (player.x < (heart.x + heart.width) && (player.x + player.width) > heart.x && player.y < (heart.y + heart.height) && (player.y + player.height) > heart.y) {
-            //console.count ("Gem!!");
-            heart.y = -200;
-            player. y += 40;
-            console.count ("Heart!!");
-            heart.reset();
-        }
-    }*/
-
-//var bug = checkCollisions(allEnemies);
-//var gem = checkCollisions(allGems);
-// Now instantiate your objects.
 var enemy = new Enemy(0,0);
-var allGems = [new blueGem(), new heart()];
 var allEnemies = [];
 for (var i = 1; i < 4; i++) {
     allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));
 }
 var player = new player(200,450);
-var blueGem = new blueGem(350,400); 
-var heart = new heart(380,430);
+var allGems = [new blueGem(), new orangeGem(), new greenGem(), new heart()];
+var blueGem = new blueGem(350,480);
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {

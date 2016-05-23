@@ -102,7 +102,7 @@ var Engine = (function(global) {
         }
         player.update(score);
         //Gem.update();
-        //blueGem.update(score);
+        //blueGem.update();
         //heart.update();
     }
 
@@ -199,6 +199,8 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/gem-blue.png',
+        'images/gem-orange.png',
+        'images/gem-green.png',
         'images/Heart.png'
     ]);
     Resources.onReady(init);
