@@ -71,41 +71,7 @@ var Engine = (function(global) {
     }
     
     //collision code
-    var checkCollisions = function(){
-        
-        // bug
-        allEnemies.forEach(function(enemy){
-            if (player.x < enemy.x + enemy.width && player.x + player.width > enemy.x && player.y < enemy.y + enemy.height && player.y + player.height > enemy.y){
-                console.count ("collision!!");
-                player.enemyCollisions();
-                player.y += 20;//pushes the player back
-                return true;   //collision
-            }
-            return false;    //no collision
-        });
-        
-        // Gems       
-        if (player.x < (blueGem.x + blueGem.width) && (player.x + player.width) > blueGem.x && player.y < (blueGem.y + blueGem.height) && (player.y + player.height) > blueGem.y) {
-            //console.count ("Gem!!");
-            //return true;   //collision
-            player.gemCollisions();
-            //player.lives += 1;
-            //document.getElementById("Lives").innerHTML = player.lives;
-            blueGem.reset();
-            
-        }
-        //return false;    //no collision
-        
-        // Heart      
-        if (player.x < (heart.x + heart.width) && (player.x + player.width) > heart.x && player.y < (heart.y + heart.height) && (player.y + player.height) > heart.y) {
-            player.gemCollisions();
-            //console.count ("Gem!!");
-            //player.lives += 1;
-            //document.getElementById("Lives").innerHTML = player.lives;
-            heart.reset();
-        }
-       
-    };
+    
     
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
@@ -118,10 +84,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisions();
-        //player.checkCollisions(allEnemies);
-        //player.checkCollisions(allGems);
-        //player.collisions(allEnemies);
+        //checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -139,8 +102,8 @@ var Engine = (function(global) {
         }
         player.update(score);
         //Gem.update();
-        blueGem.update();
-        heart.update();
+        //blueGem.update(score);
+        //heart.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -199,11 +162,12 @@ var Engine = (function(global) {
         });
     
         player.render();
-        //heart.render();
         
         //Appearance of gems & heart as function of score
+        //Gem render can be inside app.js
         if (player.score > 200 && player.score < 400){
             //blueGem.prototype.render(); 
+            //need more condition statement so that the blueGem updates only at one instance.
             blueGem.render();
         }
         
