@@ -183,26 +183,26 @@ player.prototype.enemyCollision = function() {
     
 };
 
+
+//gemcollision function
 player.prototype.gemCollision = function() {
     var gem = checkCollisions(allGems);
     //if collision detected, reduce a player life.
     //Game over if all lives lost.
     if (gem){
-        allEnemies.forEach(function(gem){
+        allGems.forEach(function(gems){
             //return true;
             console.count ("GEM!!");
-            player.y += 20;//pushes the player back
-            player.livesUpdate();
+            gems.y = -400;
+            this.lives += 1;//increases player's life
+            document.getElementById("Lives").innerHTML = player.lives;
             return true;
         })
-        
-        player.reset();
     }
     return false;
-    
+    allGems[i].reset();
 };
-//gemcollision
-     
+   
 // Show gem
 var Gem = function (x, y){
     this.height = 105;
@@ -215,43 +215,22 @@ var Gem = function (x, y){
 };
 
 Gem.prototype.update = function(){
-    //this.x = this.x;
+    this.x = this.x;
     this.y = this.y;
-    this.gemCollision();
-};
+}
 
 Gem.prototype.reset = function(){ 
     this.y = -400; //initial value of this gem so that it is out of canvas
+    player.lives += 1;
+    document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
     } 
 };
 
-/*Gem.prototype.gemCollision = function(){
-    /*var gems = checkCollisions(allGems);
-    if (allGems[i] === blueGem){
-        console.count("blueGems!")
-        this.lives += 1;
-        document.getElementById("Lives").innerHTML = player.lives;
-        blueGem.y = -400;
-        this. y += 20;
-        blueGem.reset(); 
-    var target = checkCollisions(allGems);
-    var index = allGems.indexOf(target);
-
-    if(index > -1) {
-        allGems.splice(index, 1);
-        player.lives += 1;
-        document.getElementById("Lives").innerHTML = player.lives;
-        return true;
-        if (player.y < 0){
-            player.y -= 20;
-        } 
-        
-    }
-    return false;
-    Gem.reset();
-};*/
+Gem.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 //Blue
 var blueGem = function(x,y){
@@ -259,66 +238,12 @@ var blueGem = function(x,y){
     this.sprite = 'images/gem-blue.png';
 };
 
-blueGem.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-//Orange
+blueGem.prototype = Object.create(Gem.prototype);
+//blueGem.prototype.constructor = Gem;
+blueGem.prototype.update = Gem.prototype.update;
+blueGem.prototype.reset = Gem.prototype.reset;
+blueGem.prototype.render = Gem.prototype.render;
 
-var orangeGem = function(x,y){
-    Gem.call(this, x, y);
-    this.sprite = 'images/gem-orange.png';
-};
-
-orangeGem.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-//Green
-var greenGem = function(x,y){
-    Gem.call(this, x, y);
-    this.sprite = 'images/gem-green.png';
-};
-
-greenGem.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-/*blueGem.prototype.reset = function(){ 
-    this.y = -400; //initial value of this gem so that it is out of canvas
-    if (player.y < 0){
-        player.y -= 20;
-    } 
-};*/
-    
-/*blueGem.prototype.update = function(){
-    this.x = this.x;
-    this.y = this.y; 
-};*/
-
-//Heart
-var heart = function(x,y){
-    Gem.call(this, x, y);
-    this.sprite = 'images/Heart.png';
-};
-
-heart.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-
-heart.prototype.update = function(){
-    this.x = this.x;
-    this.y = this.y; 
-};
-
-heart.prototype.reset = function(){
-    player.lives += 1;
-    document.getElementById("Lives").innerHTML = player.lives;
-    this.y = -400;
-    if (player.y < 0){
-        player.y -= 20;
-    } 
-};
 
 //new checkCollision function
 var checkCollisions = function(targetArray) {
@@ -334,14 +259,17 @@ var checkCollisions = function(targetArray) {
     return false;
 };
 
+//Initiate Enemy
 var enemy = new Enemy(0,0);
 var allEnemies = [];
 for (var i = 1; i < 4; i++) {
     allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));
 }
+//Initiate Player
 var player = new player(200,450);
-var allGems = [new blueGem(), new orangeGem(), new greenGem(), new heart()];
-var blueGem = new blueGem(350,480);
+//initiate Gems
+var allGems = [new blueGem(350,480)];
+//var blueGem = new blueGem();
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {

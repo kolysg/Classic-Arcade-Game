@@ -101,8 +101,10 @@ var Engine = (function(global) {
             });
         }
         player.update(score);
+        
+        
         //Gem.update();
-        //blueGem.update();
+        //Gem.prototype.update();
         //heart.update();
     }
 
@@ -168,8 +170,10 @@ var Engine = (function(global) {
         if (player.score > 200 && player.score < 400){
             //blueGem.prototype.render(); 
             //need more condition statement so that the blueGem updates only at one instance.
-            blueGem.render();
+            
+            blueGem.prototype.render();
         }
+        
         
         if (player.score > 400 && player.score < 600){
             heart.render();
