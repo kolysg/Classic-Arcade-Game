@@ -195,8 +195,8 @@ player.prototype.gemCollision = function() {
             allGems[0] = blueGem;
             if (player.score > 200 && player.score < 400){
                 //blueGem.render();
-                blueGem.collision();
-                blueGem.reset();
+                blueGem.prototype.collision();
+                blueGem.prototype.reset();
                 //allGems[0].render();
             }
             //return gems;
@@ -226,7 +226,7 @@ Gem.prototype.update = function(){
 
 Gem.prototype.collision = function(){
     //this.y = -400; //initial value of this gem so that it is out of canvas
-    this.render();
+    //this.render();
     player.lives += 1;
     document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
