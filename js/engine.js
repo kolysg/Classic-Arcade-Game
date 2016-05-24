@@ -171,7 +171,7 @@ var Engine = (function(global) {
             //blueGem.prototype.render(); 
             //need more condition statement so that the blueGem updates only at one instance.
             
-            blueGem.prototype.render();
+            allGems[0].render();
         }
         
         

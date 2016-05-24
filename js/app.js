@@ -190,17 +190,22 @@ player.prototype.gemCollision = function() {
     //if collision detected, reduce a player life.
     //Game over if all lives lost.
     if (gem){
+        
         allGems.forEach(function(gems){
-            //return true;
-            console.count ("GEM!!");
-            gems.y = -400;
-            this.lives += 1;//increases player's life
-            document.getElementById("Lives").innerHTML = player.lives;
-            return true;
+            allGems[0] = blueGem;
+            if (player.score > 200 && player.score < 400){
+                //blueGem.render();
+                blueGem.collision();
+                blueGem.reset();
+                //allGems[0].render();
+            }
+            //return gems;
+            //this.lives += 1;//increases player's life
+            //document.getElementById("Lives").innerHTML = player.lives;
         })
     }
     return false;
-    allGems[i].reset();
+    
 };
    
 // Show gem
@@ -219,30 +224,40 @@ Gem.prototype.update = function(){
     this.y = this.y;
 }
 
-Gem.prototype.reset = function(){ 
-    this.y = -400; //initial value of this gem so that it is out of canvas
+Gem.prototype.collision = function(){
+    //this.y = -400; //initial value of this gem so that it is out of canvas
+    this.render();
     player.lives += 1;
     document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
     } 
+}
+
+Gem.prototype.reset = function(x,y){ 
+    /*this.y = -400; //initial value of this gem so that it is out of canvas
+    player.lives += 1;
+    document.getElementById("Lives").innerHTML = player.lives;
+    if (player.y < 0){
+        player.y -= 20;
+    } */
+    this.x = this.x;
+    this.y = this.y;
 };
 
 Gem.prototype.render = function(){
+    this.y = 100;
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //Blue
-var blueGem = function(x,y){
-    Gem.call(this, x, y);
+var blueGem = function(x){
+    Gem.call(this, x);
+    this.y = -400;
     this.sprite = 'images/gem-blue.png';
 };
 
 blueGem.prototype = Object.create(Gem.prototype);
-//blueGem.prototype.constructor = Gem;
-blueGem.prototype.update = Gem.prototype.update;
-blueGem.prototype.reset = Gem.prototype.reset;
-blueGem.prototype.render = Gem.prototype.render;
 
 
 //new checkCollision function
@@ -267,6 +282,7 @@ for (var i = 1; i < 4; i++) {
 }
 //Initiate Player
 var player = new player(200,450);
+//var blueGem = new Gem(350,450);
 //initiate Gems
 var allGems = [new blueGem(350,480)];
 //var blueGem = new blueGem();
