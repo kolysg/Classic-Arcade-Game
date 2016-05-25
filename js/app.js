@@ -183,6 +183,24 @@ player.prototype.enemyCollision = function() {
     
 };
 
+//collision between player & gem
+/*player.prototype.allgemCollision = function() {
+    var gems = checkCollisions(allEnemies);
+    //if collision detected, reduce a player life.
+    //Game over if all lives lost.
+    if (gems){
+        allEnemies.forEach(function(gem){
+            gem.y = -400; //disappears the gem after collision with player
+            //return true;
+            console.count ("GEM!!");
+            player.lives += 1;
+            document.getElementById("Lives").innerHTML = player.lives;
+            return true;
+        })
+    }
+    return false;
+    
+};*/
   
 // Show gem
 var Gem = function (x, y){
@@ -194,10 +212,13 @@ var Gem = function (x, y){
 
 Gem.prototype.update = function(){
     this.gemCollision();
+    this.y = -400;
+    //allGems.splice(0, 1);
 };
 
 Gem.prototype.reset = function(x,y){ 
-    this.y = -400;
+    this.y = this.y;
+    this.x = this.x;
 };
 
 Gem.prototype.render = function(){
@@ -208,11 +229,14 @@ Gem.prototype.render = function(){
 
 //Check for Collision between star and player.
 Gem.prototype.gemCollision = function() {
-    var gem = checkCollisions(allGems);
-    var index = allGems.indexOf(gem);
+    var target = checkCollisions(allGems);
+    var index = allGems.indexOf(target);
 
     if(index > -1) {
-        allGems.splice(index, 1);
+        //allGems[index].y = -400;
+        //target[index].y = -400; //collectibles disappears, doesn't work
+        allGems.splice(index, 1); //after looping the target[index], the element is removed from the array, thus controlling that the collectible don't appear on the board anymore.
+        
         player.lives += 1;
         document.getElementById("Lives").innerHTML = player.lives;
     }
@@ -244,7 +268,7 @@ var checkCollisions = function(targetArray) {
         }
         //return false; //no collision
     }
-    return false;
+    //return false;
 };
 
 //Initiate Enemy
@@ -255,12 +279,13 @@ for (var i = 1; i < 4; i++) {
 }
 //Initiate Player
 var player = new player(200,450);
-//var blueGem = new Gem(350,450);
+
 //initiate Gems
 var bluegem = new blueGem(0,0);
 var greengem = new greenGem(0,0);
+
 var allGems = [bluegem, greengem];
-//var blueGem = new blueGem();
+//var allGems = [bluegem];
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {
