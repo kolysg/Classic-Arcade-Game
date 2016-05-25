@@ -188,13 +188,8 @@ player.prototype.enemyCollision = function() {
 var Gem = function (x, y){
     this.height = 105;
     this.width = 101;
-    //this.x = Math.floor(Math.random() * (505 - this.width));
-    //this.y = Math.floor(Math.random() * (332 - this.height));
     this.x = (Math.floor(Math.random() * (5 - 1)) + 1) * 101;
-    this.y = (Math.floor(Math.random() * (4 - 1)) + 1) * 83;
-    if (this.y < blockHeight){
-        this.y += blockHeight;
-    }
+    this.y = -400;
 };
 
 Gem.prototype.update = function(){
@@ -224,17 +219,15 @@ Gem.prototype.gemCollision = function() {
 };
 
 //Blue
-var blueGem = function(x){
-    Gem.call(this, x);
-    this.y = -400;
+var blueGem = function(x,y){
+    Gem.call(this, x, y);
     this.sprite = 'images/gem-blue.png';
 };
 blueGem.prototype = Object.create(Gem.prototype);
 
 //Green
-var greenGem = function(x){
-    Gem.call(this, x);
-    this.y = -400;
+var greenGem = function(x,y){
+    Gem.call(this, x, y);
     this.sprite = 'images/gem-green.png';
 };
 greenGem.prototype = Object.create(Gem.prototype);
@@ -264,7 +257,9 @@ for (var i = 1; i < 4; i++) {
 var player = new player(200,450);
 //var blueGem = new Gem(350,450);
 //initiate Gems
-var allGems = [new blueGem(0,0), new greenGem(0,0)];
+var bluegem = new blueGem(0,0);
+var greengem = new greenGem(0,0);
+var allGems = [bluegem, greengem];
 //var blueGem = new blueGem();
 
 //Define handleInput function

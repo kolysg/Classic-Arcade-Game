@@ -172,10 +172,10 @@ var Engine = (function(global) {
         //Gem render can be inside app.js
         allGems.forEach(function() {
             if (player.score > 200 && player.score < 400){
-                allGems[0].render();
+                bluegem.render();
             }
             if (player.score > 400 && player.score < 600){
-                allGems[1].render();
+                greengem.render();
             }
         });
     }
