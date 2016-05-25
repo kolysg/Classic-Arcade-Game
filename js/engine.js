@@ -102,6 +102,9 @@ var Engine = (function(global) {
         }
         player.update(score);
         
+        allGems.forEach(function(gem) {
+            gem.update();
+        });
         
         //Gem.update();
         //Gem.prototype.update();
@@ -167,18 +170,14 @@ var Engine = (function(global) {
         
         //Appearance of gems & heart as function of score
         //Gem render can be inside app.js
-        if (player.score > 200 && player.score < 400){
-            //blueGem.prototype.render(); 
-            //need more condition statement so that the blueGem updates only at one instance.
-            
-            allGems[0].render();
-        }
-        
-        
-        if (player.score > 400 && player.score < 600){
-            heart.render();
-        }
-        
+        allGems.forEach(function() {
+            if (player.score > 200 && player.score < 400){
+                allGems[0].render();
+            }
+            if (player.score > 400 && player.score < 600){
+                allGems[1].render();
+            }
+        });
     }
 
     /* This function does nothing but it could have been a good place to
