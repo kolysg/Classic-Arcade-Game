@@ -1,15 +1,57 @@
-body,
-div,
-h1,
-p,
- {
-  padding: 0;
-  margin: 0;
-  color: #036;
-}
 body {
+    margin: 0px;
+    font-family: 'Averia Libre', cursive;
     text-align: center;
 }
+
+#main {
+    width: 100%;
+    float: right;
+}
+
+header {
+    height: 75px;
+    background-color: #B158BE;
+    text-align: center;
+}
+
+
+h1 {
+    width: 100%;
+    margin: 0;
+    padding-top: 15px;
+    background-color: cadetblue;
+}
+
+h2 {
+    margin: 0;
+    padding-top: 10px;
+}
+
+h3 {
+    margin: 0;
+    padding-top: 10px;
+}
+
+#startScreen {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    height: 606px;
+    width: 505px;
+    background-color: red;
+}
+
+#startButton {
+    font-size: 1.5em;
+    padding: 40px;
+    margin-top: 150px;
+    border-radius: 5px;
+    background-color: #00EC00;
+}
+
 
 /*grid added to have the "desktop" effect on wider screen*/
 .grid {
@@ -22,30 +64,10 @@ body {
     width: 100%;
     display: flex; flex-wrap: wrap; flex-direction: row;
     margin:auto;
+    border: 0;
+    background-color: lightgrey;
 }
 
-
-/*column responsive for different media*/
-
-.col-md-1 {
-     width: 8.33%;
-}
-
-.col-md-2 {
-     width: 16.66%;
-}
-
-.col-md-3 {
-    width: 25%; 
-}
-
-.col-md-4 {
-     width: 33.33%;
-}
-
-.col-md-12 {
-     width: 100%;
-}
 
 h1 {
     font-size: 40px;
@@ -57,3 +79,63 @@ p {
     color: black;
 }
 
+aside.left, aside.right {
+    padding-top: 75px;
+    width: 25%;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+    text-align:center;
+    margin-left: auto;
+    margin-right; 10px;
+}
+
+.center-block {
+    margin: 0 auto;
+    display:table;
+}
+
+table {
+    margin: 25px 0 0 15px;
+    font-size: 0.9em;
+}
+
+td:nth-of-type(2) {
+    padding-left: 15px;
+    text-align: left;
+}
+
+.small {
+    height: 30%;
+    margin: 0 auto;
+}
+
+.small img {
+  height: 40%;
+  margin-top: -20px;
+}
+.crop {
+  height: 30%;
+  overflow: hidden;
+  border-radius: 100%;
+}
+#players {
+    height: 30%;
+  width: 50%;
+  margin: 0 auto;
+    overflow: inherit;
+}
+
+#scoreInfo {
+  box-sizing: border-box; /* border, padding and margin are included in width! */
+  width: 505px;
+  margin-top: 50px;
+  padding: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}

@@ -147,6 +147,20 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
+                //ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                if (player.score == 100){
+                    var rowImages = [
+                        'images/gem-green.png',   // Top row is water
+                        'images/stone-block.png',   // Row 1 of 3 of stone
+                        'images/stone-block.png',   // Row 2 of 3 of stone
+                        'images/stone-block.png',   // Row 3 of 3 of stone
+                        'images/grass-block.png',   // Row 1 of 2 of grass
+                        'images/grass-block.png'    // Row 2 of 2 of grass
+                    ],
+                    numRows = 6,
+                    numCols = 5,
+                    row, col;
+                }
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
@@ -185,11 +199,13 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     /*function reset() {
-        if (player.gameLost !== true){
-            player.reset();
-            blueGem.reset();
-        }
+        Gem.reset();
     }*/
+        //player.reset();
+        /*if (player.gameLost !== true){
+            player.reset();
+            Gem.reset();
+        }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when

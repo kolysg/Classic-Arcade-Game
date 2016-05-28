@@ -6,34 +6,77 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="main">
-        <header class="row">
-            <div class="col-md-12">
-                <h1>Classic Arcade Game</h1>
-                <p id="main"> </p>
-            </div>
-        </header>
-        <div class="row">
-            <div class="col-md-3">
-                <p>Score: </p>
-            </div>
-            <div class="col-md-1">
-                <p id="Score">0</p>
-            </div>
-            <div class="col-md-3">
-                <p>Lives: </p>
-            </div>
-            <div class="col-md-1">
-                <p id="Lives">5</p>
-            </div>
-            <div class="col-md-3">
-                <p>Gems: </p>
-            </div>
-            <div class="col-md-1">
-                <p id="Gems">0</p>
-            </div>
-
+    <div class = 'container'>
+        <div class ='row'>
+            <h1>Classic Arcade Game</h1>
         </div>
+        
+        <div class = 'row'>
+            <div class = 'col-md-4 center-block'>
+                <h2>Game Rules</h2>
+                <table>
+                    <tr>
+                        <td class="small"><img src="images/water-block.png" alt="Water block"></td>
+                        <td>reach the water <br>(20 pts and continue)</td>
+                    </tr>
+                    <tr>
+                        <td class="small"><img src="images/grass-block.png" alt="Grass block"></td>
+                        <td>safe zone</td>
+                    </tr>
+                    <tr>
+                        <td class="small"><img src="images/enemy-bug.png" alt="Enemy bug"></td>
+                        <td>Avoid Enemy</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            <img src="images/Heart.png" alt="Heart">
+                            <img src="images/Star.png" alt="Star">
+                            <img src="images/Key.png" alt="Key">
+                        </td>
+                        <td>collect = 10 pts (each)</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            <img src="images/gem-blue.png" alt="Gem Blue">
+                            <img src="images/gem-green.png" alt="Gem Green">
+                            <img src="images/gem-orange.png" alt="Gem Orange">
+                        </td>
+                        <td>collect = 30 pts (each)</td>
+                    </tr>
+                </table>
+            </div>
+            
+        
+            <div class = 'col-md-4 center-block'>
+                <h2>Score,lives</h2>
+                <table>
+                    <tr>
+                        <td> Score: <span id="Score">0</span></td>
+                        <td> Lives: <span id="Lives">0</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class= 'col-md-4 center-block'>
+                <h2>Choose a player</h2>
+                <table>
+                    <tr>
+                        <td class="small"><img id = "char-boy" src="images/char-boy.png" alt="Boy"></td>
+                        <td>Boy</td>
+                    </tr>
+                    <tr>
+                        <td class="small"><img id = "char-pink-girl" src="images/char-pink-girl.png" alt="Pink Girl"></td>
+                        <td>Pink Girl</td>
+                    </tr>
+                    <tr>
+                        <td class="small"><img id = "char-princess-girl" src="images/char-princess-girl.png" alt="Princess"></td>
+                        <td>Princess</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+        
     </div>
     
     <script src="js/resources.js"></script>

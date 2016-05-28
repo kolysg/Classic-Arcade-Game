@@ -212,13 +212,25 @@ var Gem = function (x, y){
 
 Gem.prototype.update = function(){
     this.gemCollision();
+    //this.reset();
     this.y = -400;
     //allGems.splice(0, 1);
 };
 
 Gem.prototype.reset = function(x,y){ 
-    this.y = this.y;
-    this.x = this.x;
+    //this.y = this.y;
+    //this.x = this.x;
+    this.y = -400;
+    //player.lives += 1;
+    //return true;
+     //gem dissappears
+    
+    //document.getElementById("Lives").innerHTML = player.lives;
+    if (player.y < 0){
+        player.y -= 20;
+    } 
+    
+    //return false;
 };
 
 Gem.prototype.render = function(){
@@ -231,15 +243,23 @@ Gem.prototype.render = function(){
 Gem.prototype.gemCollision = function() {
     var target = checkCollisions(allGems);
     var index = allGems.indexOf(target);
-
-    if(index > -1) {
+    if (target){
+        this.reset();
+        //return false;
+        player.lives += 1;
+        document.getElementById("Lives").innerHTML = player.lives;
+        var removedGem = allGems.splice(index, 1);
+        removedGem.y = -400;
+        console.log(removedGem);
+    }
+    /*if(index > -1) {
         //allGems[index].y = -400;
         //target[index].y = -400; //collectibles disappears, doesn't work
         allGems.splice(index, 1); //after looping the target[index], the element is removed from the array, thus controlling that the collectible don't appear on the board anymore.
         
-        player.lives += 1;
-        document.getElementById("Lives").innerHTML = player.lives;
-    }
+        //player.lives += 1;
+        //document.getElementById("Lives").innerHTML = player.lives;
+    }*/
 };
 
 //Blue
@@ -256,7 +276,51 @@ var greenGem = function(x,y){
 };
 greenGem.prototype = Object.create(Gem.prototype);
 
-
+player.prototype.handleInput = function(allowedKeys){
+    switch (allowedKeys) {
+        case 'left':
+            if (this.x > this.width){
+                this.moveLeft();
+            }   
+            if (this.y == 0){
+                player.reset();
+            }
+            //this.moveLeft();
+            break;
+       
+        case 'up':
+            if (this.y > blockHeight ){
+                this.moveUp();
+            } else if (this.y < blockHeight*0.5){
+                this.y = 0;
+                this.score += 100;
+                player.reset();
+            } else {
+                this.score += 100;
+                player.reset();
+            }
+            document.getElementById('Score').innerHTML = player.score;
+            break;
+        
+        case 'right':
+             if (this.x + blockWidth < ctx.canvas.width - this.width){
+                this.moveRight();
+            }   
+            if (this.y == 0){
+                player.reset();
+            }
+            break;
+        
+        case 'down':
+            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - blockHeight*0.5)){
+                this.moveDown();
+            }
+            if (this.y === 0){
+                player.reset();
+            }
+            break;
+    } 
+};
 //new checkCollision function
 var checkCollisions = function(targetArray) {
     for(var i = 0; i < targetArray.length; i++) {
