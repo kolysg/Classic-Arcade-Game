@@ -1,10 +1,10 @@
 
-var blockWidth = 101;
-var blockHeight = 120;
-var edge_x = 450;
-var edge_y = 450;
-var player_pos_x = 220;
-var player_pos_y = 606 - blockHeight;
+var BLOCK_WIDTH = 101;
+var BLOCK_HEIGHT = 120;
+var EDGE_X = 450;
+var EDGE_Y = 450;
+var PLAYER_POS_X = 220;
+var PLAYER_POS_Y = 606 - BLOCK_HEIGHT;
 
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
@@ -27,7 +27,7 @@ var Enemy = function(x,y,speed) {
 Enemy.prototype.update = function(dt, player) {
     
     //console.log(this.x);
-    if (this.x < edge_x){
+    if (this.x < EDGE_X){
         this.x += this.speed * dt;
     } else {
         this.x = 0;
@@ -48,9 +48,9 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var player = function(x,y){
-    this.x = player_pos_x;
-    this.y = player_pos_y;
+var Player = function(x,y){
+    this.x = PLAYER_POS_X;
+    this.y = PLAYER_POS_Y;
     this.height = 78;
     this.width = 67;
     this.score = 0;
@@ -61,46 +61,45 @@ var player = function(x,y){
     this.sprite = 'images/char-boy.png';
     //assign player's movement
     this.moveLeft = function(){
-        this.x -= blockWidth;
+        this.x -= BLOCK_WIDTH;
     };
     this.moveRight = function(){
-        this.x += blockWidth;
+        this.x += BLOCK_WIDTH;
     };
     this.moveUp = function(){
-        this.y -= blockHeight*0.5;
+        this.y -= BLOCK_HEIGHT*0.5;
     };
     this.moveDown = function(){
-        this.y += blockHeight*0.5;
+        this.y += BLOCK_HEIGHT*0.5;
     };
     
 };
 
 //update function
-player.prototype.update = function(){
+Player.prototype.update = function(){
     this.x = this.x;
     this.y = this.y; 
 };
 //reset function
-player.prototype.reset = function(){
-    this.x = player_pos_x;
-    this.y = player_pos_y;
+Player.prototype.reset = function(){
+    this.x = PLAYER_POS_X;
+    this.y = PLAYER_POS_Y;
 };
 //render function
-player.prototype.render = function(){
+Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-player.prototype.restart = function(){
-    this.x = player_pos_x;
-    this.y = player_pos_y;
+Player.prototype.restart = function(){
+    this.x = PLAYER_POS_X;
+    this.y = PLAYER_POS_Y;
     this.score = 0;
     this.lives = 5;
 };
 
 
-
 //Life decrease after enemy-collision in a separate function
-player.prototype.livesDecrease = function(){
+Player.prototype.livesDecrease = function(){
     if (this.lives > 0){
         this.lives -= 1;
         this.reset();
@@ -112,11 +111,11 @@ player.prototype.livesDecrease = function(){
         alert("Game Over, Try again!");
         this.restart(); 
     }
-    document.getElementById("Lives").innerHTML = player.lives;
+    document.getElementById("Lives").innerHTML = this.lives;
 };
 
 //Enemy collision function
-player.prototype.enemyCollision = function() {
+Player.prototype.enemyCollision = function() {
     var bug = checkCollisions(allEnemies);
     //if collision detected, reduce a player life.
     //Game over if all lives lost.
@@ -162,45 +161,45 @@ Gem.prototype.render = function(){
 //Subclasses of collectibles & prototype delegation
 
 //Blue
-var blueGem = function(x,y){
+var BlueGem = function(x,y){
     Gem.call(this, x, y);
     this.sprite = 'images/gem-blue.png';
 };
-blueGem.prototype = Object.create(Gem.prototype);
+BlueGem.prototype = Object.create(Gem.prototype);
 
 //Green
-var greenGem = function(x,y){
+var GreenGem = function(x,y){
     Gem.call(this, x, y);
     this.sprite = 'images/gem-green.png';
 };
-greenGem.prototype = Object.create(Gem.prototype);
+GreenGem.prototype = Object.create(Gem.prototype);
 
 //Orange
-var orangeGem = function(x,y){
+var OrangeGem = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/gem-orange.png';
 };
-orangeGem.prototype = Object.create(Gem.prototype);
+OrangeGem.prototype = Object.create(Gem.prototype);
 
 //Heart
-var heart = function(x,y){
+var Heart = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Heart.png';
 };
-heart.prototype = Object.create(Gem.prototype);
+Heart.prototype = Object.create(Gem.prototype);
 
 //Collectibles
-var key = function(x,y){
+var Key = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Key.png';
 };
-key.prototype = Object.create(Gem.prototype);
+Key.prototype = Object.create(Gem.prototype);
 
-var star= function(x,y){
+var Star= function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Star.png';
 };
-star.prototype = Object.create(Gem.prototype);
+Star.prototype = Object.create(Gem.prototype);
 
 
 //Check for Collision between Gems and player.
@@ -255,7 +254,7 @@ Gem.prototype.heartCollision = function() {
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 
-player.prototype.handleInput = function(allowedKeys){
+Player.prototype.handleInput = function(allowedKeys){
     switch (allowedKeys) {
         case 'left':
             if (this.x > this.width){
@@ -268,9 +267,9 @@ player.prototype.handleInput = function(allowedKeys){
             break;
        
         case 'up':
-            if (this.y > blockHeight ){
+            if (this.y > BLOCK_HEIGHT ){
                 this.moveUp();
-            } else if (this.y < blockHeight*0.5){
+            } else if (this.y < BLOCK_HEIGHT*0.5){
                 this.y = 0;
                 this.score += 100;
                 this.reset();
@@ -282,7 +281,7 @@ player.prototype.handleInput = function(allowedKeys){
             break;
         
         case 'right':
-             if (this.x + blockWidth < ctx.canvas.width - this.width){
+             if (this.x + BLOCK_WIDTH < ctx.canvas.width - this.width){
                 this.moveRight();
             }   
             if (this.y === 0){
@@ -291,7 +290,7 @@ player.prototype.handleInput = function(allowedKeys){
             break;
         
         case 'down':
-            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - blockHeight*0.5)){
+            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - BLOCK_HEIGHT*0.5)){
                 this.moveDown();
             }
             if (this.y === 0){
@@ -323,19 +322,19 @@ for (var i = 1; i < 4; i++) {
     allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));
 }
 //Initiate Player
-var player = new player(200,450);
+var player = new Player(200,450);
 
 //Initiate Gems
-var bluegem = new blueGem(0,0);
-var greengem = new greenGem(0,0);
-var orangegem = new orangeGem(0,0);
-var Heart = new heart(0,0);
-var Key = new key(0,0);
-var Star = new star(0,0);
+var bluegem = new BlueGem(0,0);
+var greengem = new GreenGem(0,0);
+var orangegem = new OrangeGem(0,0);
+var heart = new Heart(0,0);
+var key = new Key(0,0);
+var star = new Star(0,0);
 
 var allGems = [bluegem, greengem, orangegem];
-var allCollectibles = [Key, Star];
-var heart = [Heart];
+var allCollectibles = [key, star];
+var heart = [heart];
 //var allGems = [bluegem];
 
 //Define handleInput function
