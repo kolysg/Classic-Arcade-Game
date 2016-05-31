@@ -148,7 +148,7 @@ player.prototype.handleInput = function(allowedKeys){
 };
 
 //Putting increase of score and lives in a separate function
-player.prototype.livesUpdate = function(){
+player.prototype.livesDecrease = function(){
     if (player.lives > 0){
         player.lives -= 1;
         this.reset();
@@ -176,7 +176,7 @@ player.prototype.enemyCollision = function() {
             player.y += 20;//pushes the player back
             return true;
         })
-        player.livesUpdate();
+        player.livesDecrease();
         player.reset();
     }
     return false;
@@ -212,25 +212,18 @@ var Gem = function (x, y){
 
 Gem.prototype.update = function(){
     this.gemCollision();
+    this.collectibleCollision();
+    this.heartCollision();
     //this.reset();
     this.y = -400;
     //allGems.splice(0, 1);
 };
 
 Gem.prototype.reset = function(x,y){ 
-    //this.y = this.y;
-    //this.x = this.x;
     this.y = -400;
-    //player.lives += 1;
-    //return true;
-     //gem dissappears
-    
-    //document.getElementById("Lives").innerHTML = player.lives;
     if (player.y < 0){
         player.y -= 20;
     } 
-    
-    //return false;
 };
 
 Gem.prototype.render = function(){
@@ -239,7 +232,7 @@ Gem.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Check for Collision between star and player.
+//Check for Collision between Gems and player.
 Gem.prototype.gemCollision = function() {
     var target = checkCollisions(allGems);
     var index = allGems.indexOf(target);
@@ -248,18 +241,45 @@ Gem.prototype.gemCollision = function() {
         //return false;
         player.lives += 1;
         document.getElementById("Lives").innerHTML = player.lives;
+        
         var removedGem = allGems.splice(index, 1);
         removedGem.y = -400;
         console.log(removedGem);
     }
-    /*if(index > -1) {
-        //allGems[index].y = -400;
-        //target[index].y = -400; //collectibles disappears, doesn't work
-        allGems.splice(index, 1); //after looping the target[index], the element is removed from the array, thus controlling that the collectible don't appear on the board anymore.
+    return false;
+    
+};
+
+//Check for Collision between Collectible and player.
+Gem.prototype.collectibleCollision = function() {
+    var target = checkCollisions(allCollectibles);
+    var index = allCollectibles.indexOf(target);
+    if (target){
+        this.reset();
+        //return false;
+        player.lives += 1;
+        player.score += 100;
+        document.getElementById("Lives").innerHTML = player.lives;
+        document.getElementById("Score").innerHTML = player.score;
         
-        //player.lives += 1;
-        //document.getElementById("Lives").innerHTML = player.lives;
-    }*/
+        var removedItem = allCollectibles.splice(index, 1);
+        removedItem.y = -400;
+        console.log(removedItem);
+    }
+    return false;
+    
+};
+
+Gem.prototype.heartCollision = function() {
+    var target = checkCollisions(heart);
+    var index = heart.indexOf(target);
+    if (target){
+        this.reset();
+        //return false;
+        player.sprite = 'images/char-princess-girl.png'
+    }
+    return false;
+    
 };
 
 //Blue
@@ -275,6 +295,35 @@ var greenGem = function(x,y){
     this.sprite = 'images/gem-green.png';
 };
 greenGem.prototype = Object.create(Gem.prototype);
+
+//Orange
+var orangeGem = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/gem-orange.png';
+}
+orangeGem.prototype = Object.create(Gem.prototype);
+
+//Heart
+var heart = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Heart.png';
+}
+heart.prototype = Object.create(Gem.prototype);
+
+//Collectibles
+var key = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Key.png';
+}
+key.prototype = Object.create(Gem.prototype);
+
+var star= function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Star.png';
+}
+star.prototype = Object.create(Gem.prototype);
+
+//HandleInput
 
 player.prototype.handleInput = function(allowedKeys){
     switch (allowedKeys) {
@@ -344,11 +393,17 @@ for (var i = 1; i < 4; i++) {
 //Initiate Player
 var player = new player(200,450);
 
-//initiate Gems
+//Initiate Gems
 var bluegem = new blueGem(0,0);
 var greengem = new greenGem(0,0);
+var orangegem = new orangeGem(0,0);
+var Heart = new heart(0,0);
+var Key = new key(0,0);
+var Star = new star(0,0);
 
-var allGems = [bluegem, greengem];
+var allGems = [bluegem, greengem, orangegem];
+var allCollectibles = [Key, Star];
+var heart = [Heart];
 //var allGems = [bluegem];
 
 //Define handleInput function

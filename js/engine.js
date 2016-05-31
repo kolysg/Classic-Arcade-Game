@@ -106,6 +106,11 @@ var Engine = (function(global) {
             gem.update();
         });
         
+         allCollectibles.forEach(function(item) {
+            item.update();
+        });
+        
+        
         //Gem.update();
         //Gem.prototype.update();
         //heart.update();
@@ -148,7 +153,7 @@ var Engine = (function(global) {
                  * we're using them over and over.
                  */
                 //ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
-                if (player.score == 100){
+                if (player.score > 500 && player.lives > 5){
                     var rowImages = [
                         'images/water-block-heart.png',   // Top row is water
                         'images/stone-block.png',   // Row 1 of 3 of stone
@@ -185,13 +190,23 @@ var Engine = (function(global) {
         //Appearance of gems & heart as function of score
         //Gem render can be inside app.js
         allGems.forEach(function(gem, i) {
-            if (player.score > 200 && player.score < 400){
+            if (player.score > 200){
                 allGems[i].render();
+                return true;
             }
             /*if (player.score > 400 && player.score < 600){
                 greengem.render();
             }*/
         });
+        
+        allCollectibles.forEach(function(item,i){
+            if (player.score > 400 ){
+                allCollectibles[i].render();
+                return true;
+            }
+            
+        }
+        );
     }
 
     /* This function does nothing but it could have been a good place to
@@ -220,7 +235,10 @@ var Engine = (function(global) {
         'images/gem-blue.png',
         'images/gem-orange.png',
         'images/gem-green.png',
-        'images/Heart.png'
+        'images/Heart.png',
+        'images/Star.png',
+        'images/Key.png',
+        'images/water-block-heart.png'
     ]);
     Resources.onReady(init);
 
