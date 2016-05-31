@@ -103,8 +103,8 @@ player.prototype.restart = function(){
 
 //Life decrease after enemy-collision in a separate function
 player.prototype.livesDecrease = function(){
-    if (player.lives > 0){
-        player.lives -= 1;
+    if (this.lives > 0){
+        this.lives -= 1;
         this.reset();
     }else {
         this.lives = 0;
@@ -127,11 +127,11 @@ player.prototype.enemyCollision = function() {
         allEnemies.forEach(function(enemy){
             //return true;
             console.count ("collision!!");
-            player.y += 20;//pushes the player back
+            this.y += 20;//pushes the player back
             return true;
         });
-        player.livesDecrease();
-        player.reset();
+        this.livesDecrease();
+        this.reset();
     }
     return false;
     
@@ -274,7 +274,7 @@ player.prototype.handleInput = function(allowedKeys){
                 this.moveLeft();
             }   
             if (this.y === 0){
-                player.reset();
+                this.reset();
             }
             //this.moveLeft();
             break;
@@ -285,12 +285,12 @@ player.prototype.handleInput = function(allowedKeys){
             } else if (this.y < blockHeight*0.5){
                 this.y = 0;
                 this.score += 100;
-                player.reset();
+                this.reset();
             } else {
                 this.score += 100;
-                player.reset();
+                this.reset();
             }
-            document.getElementById('Score').innerHTML = player.score;
+            document.getElementById('Score').innerHTML = this.score;
             break;
         
         case 'right':
@@ -298,7 +298,7 @@ player.prototype.handleInput = function(allowedKeys){
                 this.moveRight();
             }   
             if (this.y === 0){
-                player.reset();
+                this.reset();
             }
             break;
         
@@ -307,7 +307,7 @@ player.prototype.handleInput = function(allowedKeys){
                 this.moveDown();
             }
             if (this.y === 0){
-                player.reset();
+                this.reset();
             }
             break;
     } 
