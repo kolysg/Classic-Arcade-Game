@@ -84,6 +84,8 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        player.enemyCollision();
+        //this.heartCollision();
         //checkCollisions();
     }
 
@@ -103,10 +105,12 @@ var Engine = (function(global) {
         player.update(score);
         
         allGems.forEach(function(gem) {
+            gem.gemCollision();
             gem.update();
         });
         
          allCollectibles.forEach(function(item) {
+            item.collectibleCollision();
             item.update();
         });
         

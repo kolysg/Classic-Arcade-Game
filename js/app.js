@@ -79,8 +79,6 @@ var player = function(x,y){
 player.prototype.update = function(){
     this.x = this.x;
     this.y = this.y; 
-    this.enemyCollision();
-    //this.gemCollision();
 };
 //reset function
 player.prototype.reset = function(){
@@ -115,7 +113,6 @@ player.prototype.livesDecrease = function(){
         this.restart(); 
     }
     document.getElementById("Lives").innerHTML = player.lives;
-    //document.getElementById("Score").innerHTML = player.score;
 };
 
 //Enemy collision function
@@ -125,7 +122,6 @@ player.prototype.enemyCollision = function() {
     //Game over if all lives lost.
     if (bug){
         allEnemies.forEach(function(enemy){
-            //return true;
             console.count ("collision!!");
             this.y += 20;//pushes the player back
             return true;
@@ -147,24 +143,18 @@ var Gem = function (x, y){
 };
 
 Gem.prototype.update = function(){
-    this.gemCollision();
-    this.collectibleCollision();
-    this.heartCollision();
-    //this.reset();
     this.y = -400;
-    //allGems.splice(0, 1);
 };
 
 Gem.prototype.reset = function(x,y){ 
-    this.y = -400;
+    this.y = -400;//gem disappears from the canvas
     if (player.y < 0){
         player.y -= 20;
     } 
 };
 
 Gem.prototype.render = function(){
-    //this.y = (Math.floor(Math.random() * (4 - 1)) + 1) * 83;
-    this.y = 100;
+    this.y = 100; 
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -219,12 +209,11 @@ Gem.prototype.gemCollision = function() {
     var index = allGems.indexOf(target);
     if (target){
         this.reset();
-        //return false;
         player.lives += 1;
         document.getElementById("Lives").innerHTML = player.lives;
         
-        var removedGem = allGems.splice(index, 1);
-        removedGem.y = -400;
+        var removedGem = allGems.splice(index, 1); //removes item from the array after collision
+        removedGem.y = -400;// item disappears from the canvas
         console.log(removedGem);
     }
     return false;
@@ -237,7 +226,6 @@ Gem.prototype.collectibleCollision = function() {
     var index = allCollectibles.indexOf(target);
     if (target){
         this.reset();
-        //return false;
         player.lives += 1;
         player.score += 100;
         document.getElementById("Lives").innerHTML = player.lives;
