@@ -150,7 +150,7 @@ var Engine = (function(global) {
                 //ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
                 if (player.score == 100){
                     var rowImages = [
-                        'images/gem-green.png',   // Top row is water
+                        'images/water-block-heart.png',   // Top row is water
                         'images/stone-block.png',   // Row 1 of 3 of stone
                         'images/stone-block.png',   // Row 2 of 3 of stone
                         'images/stone-block.png',   // Row 3 of 3 of stone
@@ -184,13 +184,13 @@ var Engine = (function(global) {
         
         //Appearance of gems & heart as function of score
         //Gem render can be inside app.js
-        allGems.forEach(function() {
+        allGems.forEach(function(gem, i) {
             if (player.score > 200 && player.score < 400){
-                bluegem.render();
+                allGems[i].render();
             }
-            if (player.score > 400 && player.score < 600){
+            /*if (player.score > 400 && player.score < 600){
                 greengem.render();
-            }
+            }*/
         });
     }
 
