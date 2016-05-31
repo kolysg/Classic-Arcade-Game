@@ -1,6 +1,6 @@
 ## **Classic Arcade Game - Be My Queen**
 ===============================
-Cross the loveline once you collect enough collectibles, then you get score and lives. Crossing the love line will give you the queen in the board (functionality yet to be added). For now, collect as many points and lives as possible. Be aware, don't loose any life or you will loose and game will restart.
+Cross the top water-line to get points, collect gems and collectibles to get additional score and lives. Enough score and life will turn the water-line into love-line which will give you the queen in the game canvas (functionality yet to be added). For now, collect as many points and lives as possible. Be aware, don't collide with the bugs or you will loose life and the game will restart.
 
 ### Game Instructions
 ---
