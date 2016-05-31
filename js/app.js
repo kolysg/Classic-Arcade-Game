@@ -129,7 +129,7 @@ player.prototype.enemyCollision = function() {
             console.count ("collision!!");
             player.y += 20;//pushes the player back
             return true;
-        })
+        });
         player.livesDecrease();
         player.reset();
     }
@@ -189,27 +189,27 @@ greenGem.prototype = Object.create(Gem.prototype);
 var orangeGem = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/gem-orange.png';
-}
+};
 orangeGem.prototype = Object.create(Gem.prototype);
 
 //Heart
 var heart = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Heart.png';
-}
+};
 heart.prototype = Object.create(Gem.prototype);
 
 //Collectibles
 var key = function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Key.png';
-}
+};
 key.prototype = Object.create(Gem.prototype);
 
 var star= function(x,y){
     Gem.call(this,x,y);
     this.sprite = 'images/Star.png';
-}
+};
 star.prototype = Object.create(Gem.prototype);
 
 
@@ -258,7 +258,7 @@ Gem.prototype.heartCollision = function() {
     if (target){
         this.reset();
         //return false;
-        player.sprite = 'images/char-princess-girl.png'
+        player.sprite = 'images/char-princess-girl.png';
     }
     return false;
     
@@ -273,7 +273,7 @@ player.prototype.handleInput = function(allowedKeys){
             if (this.x > this.width){
                 this.moveLeft();
             }   
-            if (this.y == 0){
+            if (this.y === 0){
                 player.reset();
             }
             //this.moveLeft();
@@ -297,7 +297,7 @@ player.prototype.handleInput = function(allowedKeys){
              if (this.x + blockWidth < ctx.canvas.width - this.width){
                 this.moveRight();
             }   
-            if (this.y == 0){
+            if (this.y === 0){
                 player.reset();
             }
             break;

@@ -95,7 +95,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt,score) {
-        if (player.gameWon != true){
+        if (player.gameWon !== true){
             allEnemies.forEach(function(enemy) {
                 enemy.update(dt);
             });
