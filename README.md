@@ -10,5 +10,5 @@ The rules for playing the game:
 - Be careful with the bugs! Avoid colliding with them or you loose all you points!!
 
 
-![Frogger Game](https://github.com/kolysg/Project3-Classic_Arcade-Game/branch4/images/Frogger.png)
+![Frogger Game](https://github.com/kolysg/Project3_Classic_Arcade_Game/tree/branch4/images/Frogger.png)
 
