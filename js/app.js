@@ -310,9 +310,9 @@ var checkCollisions = function(targetArray) {
             player.y + player.height > targetArray[i].y) {
                 return targetArray[i];//collision
         }
-        //return false; //no collision
+        
     }
-    //return false;
+    
 };
 
 //Initiate Enemy
@@ -324,7 +324,7 @@ for (var i = 1; i < 4; i++) {
 //Initiate Player
 var player = new Player(200,450);
 
-//Initiate Gems
+//Initiate Gems & Collectibles
 var bluegem = new BlueGem(0,0);
 var greengem = new GreenGem(0,0);
 var orangegem = new OrangeGem(0,0);
@@ -332,6 +332,7 @@ var heart = new Heart(0,0);
 var key = new Key(0,0);
 var star = new Star(0,0);
 
+//Initiate Arrays that will be passed into checkCollision function
 var allGems = [bluegem, greengem, orangegem];
 var allCollectibles = [key, star];
 var heart = [heart];
