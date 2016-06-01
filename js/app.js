@@ -1,26 +1,25 @@
+
 var blockWidth = 101;
-var blockHeight = 83;
+var blockHeight = 120;
 var edge_x = 450;
 var edge_y = 450;
-var player_pos_x = 200;
-var player_pos_y = 400;
-var player_width = 101;
-var player_height = 171;
-
-
+var player_pos_x = 220;
+var player_pos_y = 606 - blockHeight;
 
 // Enemies our player must avoid
-var Enemy = function(x,y) {
+var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
+    this.height = 70;
+    this.width = 100;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     //set the speed
     var pxlpermsec = 100;
-    this.speed = Math.floor(Math.random()*pxlpermsec + 1);
+    this.speed = Math.random()*pxlpermsec + 1;
 };
 
 // Update the enemy's position, required method for game
@@ -32,6 +31,7 @@ Enemy.prototype.update = function(dt, player) {
         this.x += this.speed * dt;
     } else {
         this.x = 0;
+        this.x += this.speed * dt;
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -44,17 +44,20 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var enemy = new Enemy(0,0);
-
-
-
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var player = function(x,y){
-    this.x = x;
-    this.y = y;
+    this.x = player_pos_x;
+    this.y = player_pos_y;
+    this.height = 78;
+    this.width = 67;
+    this.score = 0;
+    this.lives = 5;
+    this.gemScore = 0;
+    this.gameLost = false;
+    this.gameWon = false;
     this.sprite = 'images/char-boy.png';
     //assign player's movement
     this.moveLeft = function(){
@@ -72,83 +75,280 @@ var player = function(x,y){
     
 };
 
+//update function
 player.prototype.update = function(){
-    if (this.x < 0) {
-        this.x = 0;
-    } else if (this.x > edge_x - blockWidth * 0.5) {
-        this.x = edge_x - blockWidth * 0.5;
-        //console.log(this.x);    
-    } else if (this.y < 0) {
-        this.y = 0;
-    } else if (this.y === 0) {
-        this.y = player_pos_y;
-        this.x = player_pos_x;
-        //player.reset();
-    } else if (this.y > edge_y - blockHeight * 0.5) {
-        this.y = edge_y - blockHeight*0.5;
-    }
-    
+    this.x = this.x;
+    this.y = this.y; 
+    this.enemyCollision();
+    //this.gemCollision();
 };
-
+//reset function
+player.prototype.reset = function(){
+    this.x = player_pos_x;
+    this.y = player_pos_y;
+};
+//render function
 player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+player.prototype.restart = function(){
+    this.x = player_pos_x;
+    this.y = player_pos_y;
+    this.score = 0;
+    this.lives = 5;
+};
 
 
+
+//Life decrease after enemy-collision in a separate function
+player.prototype.livesDecrease = function(){
+    if (player.lives > 0){
+        player.lives -= 1;
+        this.reset();
+    }else {
+        this.lives = 0;
+    }
+    if(this.lives === 0){
+        this.lives = 0;
+        alert("Game Over, Try again!");
+        this.restart(); 
+    }
+    document.getElementById("Lives").innerHTML = player.lives;
+    //document.getElementById("Score").innerHTML = player.score;
+};
+
+//Enemy collision function
+player.prototype.enemyCollision = function() {
+    var bug = checkCollisions(allEnemies);
+    //if collision detected, reduce a player life.
+    //Game over if all lives lost.
+    if (bug){
+        allEnemies.forEach(function(enemy){
+            //return true;
+            console.count ("collision!!");
+            player.y += 20;//pushes the player back
+            return true;
+        })
+        player.livesDecrease();
+        player.reset();
+    }
+    return false;
+    
+};
+
+  
+// Gem Superclass
+var Gem = function (x, y){
+    this.height = 105;
+    this.width = 101;
+    this.x = (Math.floor(Math.random() * (5 - 1)) + 1) * 101;
+    this.y = -400;
+};
+
+Gem.prototype.update = function(){
+    this.gemCollision();
+    this.collectibleCollision();
+    this.heartCollision();
+    //this.reset();
+    this.y = -400;
+    //allGems.splice(0, 1);
+};
+
+Gem.prototype.reset = function(x,y){ 
+    this.y = -400;
+    if (player.y < 0){
+        player.y -= 20;
+    } 
+};
+
+Gem.prototype.render = function(){
+    //this.y = (Math.floor(Math.random() * (4 - 1)) + 1) * 83;
+    this.y = 100;
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+//Subclasses of collectibles & prototype delegation
+
+//Blue
+var blueGem = function(x,y){
+    Gem.call(this, x, y);
+    this.sprite = 'images/gem-blue.png';
+};
+blueGem.prototype = Object.create(Gem.prototype);
+
+//Green
+var greenGem = function(x,y){
+    Gem.call(this, x, y);
+    this.sprite = 'images/gem-green.png';
+};
+greenGem.prototype = Object.create(Gem.prototype);
+
+//Orange
+var orangeGem = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/gem-orange.png';
+}
+orangeGem.prototype = Object.create(Gem.prototype);
+
+//Heart
+var heart = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Heart.png';
+}
+heart.prototype = Object.create(Gem.prototype);
+
+//Collectibles
+var key = function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Key.png';
+}
+key.prototype = Object.create(Gem.prototype);
+
+var star= function(x,y){
+    Gem.call(this,x,y);
+    this.sprite = 'images/Star.png';
+}
+star.prototype = Object.create(Gem.prototype);
+
+
+//Check for Collision between Gems and player.
+Gem.prototype.gemCollision = function() {
+    var target = checkCollisions(allGems);
+    var index = allGems.indexOf(target);
+    if (target){
+        this.reset();
+        //return false;
+        player.lives += 1;
+        document.getElementById("Lives").innerHTML = player.lives;
+        
+        var removedGem = allGems.splice(index, 1);
+        removedGem.y = -400;
+        console.log(removedGem);
+    }
+    return false;
+    
+};
+
+//Check for Collision between Collectible and player.
+Gem.prototype.collectibleCollision = function() {
+    var target = checkCollisions(allCollectibles);
+    var index = allCollectibles.indexOf(target);
+    if (target){
+        this.reset();
+        //return false;
+        player.lives += 1;
+        player.score += 100;
+        document.getElementById("Lives").innerHTML = player.lives;
+        document.getElementById("Score").innerHTML = player.score;
+        
+        var removedItem = allCollectibles.splice(index, 1);
+        removedItem.y = -400;
+        console.log(removedItem);
+    }
+    return false;
+    
+};
+
+////Check for Collision between heart and player. A new player will appear on the board. When one player collide with another, player wins.
+Gem.prototype.heartCollision = function() {
+    var target = checkCollisions(heart);
+    var index = heart.indexOf(target);
+    if (target){
+        this.reset();
+        //return false;
+        player.sprite = 'images/char-princess-girl.png'
+    }
+    return false;
+    
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 
-player.prototype.handleInput = function(key){
-    switch (key) {
-        case 'left': 
-            this.moveLeft();
+player.prototype.handleInput = function(allowedKeys){
+    switch (allowedKeys) {
+        case 'left':
+            if (this.x > this.width){
+                this.moveLeft();
+            }   
+            if (this.y == 0){
+                player.reset();
+            }
+            //this.moveLeft();
             break;
+       
         case 'up':
-            this.moveUp();
+            if (this.y > blockHeight ){
+                this.moveUp();
+            } else if (this.y < blockHeight*0.5){
+                this.y = 0;
+                this.score += 100;
+                player.reset();
+            } else {
+                this.score += 100;
+                player.reset();
+            }
+            document.getElementById('Score').innerHTML = player.score;
             break;
+        
         case 'right':
-            this.moveRight();
+             if (this.x + blockWidth < ctx.canvas.width - this.width){
+                this.moveRight();
+            }   
+            if (this.y == 0){
+                player.reset();
+            }
             break;
+        
         case 'down':
-            this.moveDown();
+            if (this.y < (ctx.canvas.height - this.height) && this.y !== 0 && (this.y + this.height) < (ctx.canvas.height - blockHeight*0.5)){
+                this.moveDown();
+            }
+            if (this.y === 0){
+                player.reset();
+            }
             break;
-    }
-    
+    } 
 };
 
-//Collision code for player class
 
-player.prototype.collisions = function (targets){
-    if (targets.constructor === Array){
-        var target;
-        for (var i =0; i < targets.length; i++){
-            targets[i] = target;
-            this.collisions(target);
+//CheckCollision function, this checks for all collision for array-items with player
+var checkCollisions = function(targetArray) {
+    for(var i = 0; i < targetArray.length; i++) {
+        if(player.x < targetArray[i].x + targetArray[i].width &&
+            player.x + player.width > targetArray[i].x &&
+            player.y < targetArray[i].y + targetArray[i].height &&
+            player.y + player.height > targetArray[i].y) {
+                return targetArray[i];//collision
         }
-    } else {
-        this.collisions(target);
+        //return false; //no collision
     }
+    //return false;
 };
 
-//collision code
-var collisions = function(target){
-    if (target.x <= player.x + player_width * 0.5){
-        console.log("collision");
-    } else if (target.y <= player.y + player_height * 0.5){
-        console.log("collision");
-    }
-};
+//Initiate Enemy
+var enemy = new Enemy(0,0);
+var allEnemies = [];
+for (var i = 1; i < 4; i++) {
+    allEnemies.push(new Enemy(this.x, (i * 119) + 25, this.speed * 99 * i));
+}
+//Initiate Player
+var player = new player(200,450);
 
+//Initiate Gems
+var bluegem = new blueGem(0,0);
+var greengem = new greenGem(0,0);
+var orangegem = new orangeGem(0,0);
+var Heart = new heart(0,0);
+var Key = new key(0,0);
+var Star = new star(0,0);
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-var allEnemies = [new Enemy (0,200), new Enemy(100,400), new Enemy(200,300)];
-
-// Place the player object in a variable called player
-var player = new player(200,400);
-
+var allGems = [bluegem, greengem, orangegem];
+var allCollectibles = [Key, Star];
+var heart = [Heart];
+//var allGems = [bluegem];
 
 //Define handleInput function
 document.addEventListener('keyup', function(e) {
